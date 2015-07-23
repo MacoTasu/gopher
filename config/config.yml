@@ -1,0 +1,5 @@
+password: "example"
+server: "irc.example.com"
+channel: "#example"
+git_work_dir: "./"
+pull_request_comment: "example"
