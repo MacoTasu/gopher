@@ -5,21 +5,22 @@ import (
 )
 
 type Command struct {
-	Run func([]string) (string, error)
+	Run  func([]string) (string, error)
+	Args []string
 }
 
-func (c *Command) Call(args []string) (string, error) {
-	cmd, cmdArgs, err := c.fetchSubCommand(args)
+func (c *Command) FetchFunc(args []string) error {
+	err := c.fetchSubCommand(args)
 	if err != nil {
-		return "", err
+		return err
 	}
 
-	return cmd.Run(cmdArgs)
+	return nil
 }
 
-func (c *Command) fetchSubCommand(args []string) (*Command, []string, error) {
+func (c *Command) fetchSubCommand(args []string) error {
 	if len(args) <= 0 {
-		return nil, nil, fmt.Errorf("please choose the command")
+		return fmt.Errorf("please choose the command")
 	}
 
 	//TODO : 動的につくったほうがいい
@@ -31,8 +32,15 @@ func (c *Command) fetchSubCommand(args []string) (*Command, []string, error) {
 	subCommand := subCommands[args[0]]
 
 	if subCommand == nil {
-		return nil, nil, fmt.Errorf("unknown command %s", args[0])
+		return fmt.Errorf("unknown command %s", args[0])
 	}
 
-	return &Command{Run: subCommand}, args[1:], nil
+	c.Run = subCommand
+	c.Args = args[1:]
+
+	return nil
+}
+
+func (c *Command) Call() (string, error) {
+	return c.Run(c.Args)
 }

@@ -27,9 +27,16 @@ func main() {
 		msgs := strings.Split(string(e.Message()), " ")
 
 		if len(msgs) >= 2 && strings.Contains(msgs[0], "gopher") {
-			ircobj.Notice(conf.Channel, prefix+msgs[1]+" not ybsk")
 			cmd := &commands.Command{}
-			result, err := cmd.Call(msgs[1:])
+			err := cmd.FetchFunc(msgs[1:])
+			if err != nil {
+				ircobj.Privmsg(conf.Channel, prefix+fmt.Sprintln(err))
+				return
+			}
+
+			ircobj.Notice(conf.Channel, prefix+msgs[1]+" not ybsk")
+
+			result, err := cmd.Call()
 			if err != nil {
 				ircobj.Privmsg(conf.Channel, prefix+fmt.Sprintln(err))
 			} else {
