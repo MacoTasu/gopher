@@ -13,6 +13,7 @@ import (
 type TopicDeploy struct {
 	ServerName  string
 	IssueNumber int
+	Options     []string
 }
 
 func topicDeploy(args []string) (string, error) {
@@ -25,7 +26,7 @@ func topicDeploy(args []string) (string, error) {
 		return "", err
 	}
 
-	td := &TopicDeploy{ServerName: args[0], IssueNumber: number}
+	td := &TopicDeploy{ServerName: args[0], IssueNumber: number, Options: args[2:]}
 	return td.Exec()
 }
 
@@ -61,7 +62,12 @@ func (td *TopicDeploy) Exec() (string, error) {
 	git.Merge("origin/" + ref + "-assetbundle")
 	git.PushRemote(deployRefName)
 
-	return "akane: deploy " + td.ServerName + " " + deployRefName, nil
+	message := fmt.Sprintf("akane: deploy %s %s", td.ServerName, deployRefName)
+	if len(td.Options) > 0 {
+		message := fmt.Sprintf("%s %s", message, strings.Join(td.Options, " "))
+	}
+
+	return message, nil
 }
 
 func (td *TopicDeploy) fetchPullRequestHeadRef(client *github.Client, owner string, repo string) (string, error) {
