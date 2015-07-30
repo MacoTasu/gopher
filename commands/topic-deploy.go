@@ -63,8 +63,8 @@ func (td *TopicDeploy) Exec() (string, error) {
 	git.PushRemote(deployRefName)
 
 	message := fmt.Sprintf("akane: deploy %s %s", td.ServerName, deployRefName)
-	if len(options) > 0 {
-		message := fmt.Sprintf("%s %s", message, strings.Join(options, " "))
+	if len(td.Options) > 0 {
+		message := fmt.Sprintf("%s %s", message, strings.Join(td.Options, " "))
 	}
 
 	return message, nil
