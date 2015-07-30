@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/google/go-github/github"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -64,7 +65,7 @@ func (td *TopicDeploy) Exec() (string, error) {
 
 	message := fmt.Sprintf("akane: deploy %s %s", td.ServerName, deployRefName)
 	if len(td.Options) > 0 {
-		message := fmt.Sprintf("%s %s", message, strings.Join(td.Options, " "))
+		message = fmt.Sprintf("%s %s", message, strings.Join(td.Options, " "))
 	}
 
 	return message, nil
