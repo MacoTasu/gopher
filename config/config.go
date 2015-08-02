@@ -11,6 +11,8 @@ type ConfData struct {
 	Channel            string `yaml:"channel"`
 	GitWorkDir         string `yaml:"git_work_dir"`
 	PullRequestComment string `yaml:"pull_request_comment"`
+	MirageUrl          string `yaml:"mirage_url"`
+	DockerImage        string `yaml:"docker_image"`
 }
 
 // conf.ymlをロードし構造体へ格納

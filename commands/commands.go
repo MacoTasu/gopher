@@ -27,6 +27,7 @@ func (c *Command) fetchSubCommand(args []string) error {
 	subCommands := map[string]func([]string) (string, error){
 		"topic-create": topicCreate,
 		"topic-deploy": topicDeploy,
+		"topic-launch": topicLaunch,
 	}
 
 	subCommand := subCommands[args[0]]
