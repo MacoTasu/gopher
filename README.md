@@ -19,7 +19,8 @@ github PR numberはtestブランチがmasterブランチに対して作成した
 issue番号からtopic-createで作成されたブランチを探し出し、新たしいブランチを作成後一つにマージします。
 
 ## topic-launch
-topic-createで作成されたブランチを一つにマージして、docker上で動かせるようにします。
+topic-createで作成されたブランチを一つにマージして、dockerで動かせるようにします。
+ブランチを反映させるにはdocker_run.shが必要です。
 ```
 gopher: topic-launch <domain_name> <github PR number>
 ```
