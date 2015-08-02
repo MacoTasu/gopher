@@ -26,7 +26,7 @@ func main() {
 	ircobj.AddCallback("PRIVMSG", func(e *irc.Event) {
 		msgs := strings.Split(string(e.Message()), " ")
 
-		if len(msgs) >= 2 && strings.Contains(msgs[0], "gopher") {
+		if len(msgs) >= 2 && (strings.EqualFold(msgs[0], "gopher:") || strings.EqualFold(msgs[0], "gopher")) {
 			cmd := &commands.Command{}
 			err := cmd.FetchFunc(msgs[1:])
 			if err != nil {
