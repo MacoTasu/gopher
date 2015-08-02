@@ -28,6 +28,7 @@ func (c *Command) fetchSubCommand(args []string) error {
 		"topic-create": topicCreate,
 		"topic-deploy": topicDeploy,
 		"topic-launch": topicLaunch,
+		"help":         help,
 	}
 
 	subCommand := subCommands[args[0]]
