@@ -1,0 +1,46 @@
+package commands
+
+import (
+	"../cmd"
+	"../config"
+	"../models"
+	"fmt"
+)
+
+type Launch struct {
+	Subdomain  string
+	BranchName string
+}
+
+func launch(args []string) (string, error) {
+	if len(args) < 2 {
+		return "", fmt.Errorf("not enough argument")
+	}
+
+	l := &Launch{Subdomain: args[0], BranchName: args[1]}
+	return l.Exec()
+}
+
+func (l *Launch) Exec() (string, error) {
+	conf := config.LoadConfig()
+	git := &models.Git{WorkDir: conf.GitWorkDir}
+
+	if _, err := git.Fetch(); err != nil {
+		return "", err
+	}
+
+	if _, err := git.CheckoutBranch(l.BranchName); err != nil {
+		return "", err
+	}
+
+	c := cmd.Cmd{
+		Name: "curl",
+		Args: []string{conf.MirageUrl, "-d", "subdomain=" + l.Subdomain, "-d", "branch=" + l.BranchName, "-d", "image=" + conf.DockerImage},
+	}
+
+	if _, err := c.Exec(); err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("ʕ ◔ϖ◔ʔ < %sに%sのブランチで環境作成したよ！", l.Subdomain, l.BranchName), nil
+}
