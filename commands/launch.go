@@ -42,5 +42,5 @@ func (l *Launch) Exec() (string, error) {
 		return "", err
 	}
 
-	return fmt.Sprintf("ʕ ◔ϖ◔ʔ < %s に %s のブランチで環境作成したよ！", l.Subdomain, l.BranchName), nil
+	return fmt.Sprintf("ʕ ◔ϖ◔ʔ < %s に %s で環境作成したよ！", l.Subdomain, l.BranchName), nil
 }
