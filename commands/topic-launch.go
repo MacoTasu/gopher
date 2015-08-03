@@ -71,7 +71,7 @@ func (tl *TopicLaunch) Exec() (string, error) {
 		return "", err
 	}
 
-	return fmt.Sprintf("ʕ ◔ϖ◔ʔ < %sに%sのブランチで環境作成したよ！", tl.Subdomain, deployRefName), nil
+	return fmt.Sprintf("ʕ ◔ϖ◔ʔ < %s に %s のブランチで環境作成したよ！", tl.Subdomain, deployRefName), nil
 }
 
 func (tl *TopicLaunch) fetchPullRequestHeadRef(client *github.Client, owner string, repo string) (string, error) {
