@@ -18,7 +18,7 @@ func (m *Mirage) Launch() (string, error) {
 		return "", err
 	}
 
-	if percentage > 80 {
+	if percentage > 79 {
 		return "", fmt.Errorf(fmt.Sprintf("Can't launch. UsedMemory: %s %", percentage))
 	}
 
