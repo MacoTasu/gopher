@@ -2,7 +2,7 @@ package commands
 
 import (
 	"../config"
-	"../models"
+	"../git"
 	"code.google.com/p/goauth2/oauth"
 	"fmt"
 	"github.com/google/go-github/github"
@@ -33,7 +33,7 @@ func topicDeploy(args []string) (string, error) {
 
 func (td *TopicDeploy) Exec() (string, error) {
 	conf := config.LoadConfig()
-	git := &models.Git{WorkDir: conf.GitWorkDir}
+	git := &git.Git{WorkDir: conf.GitWorkDir}
 
 	token, err := git.FetchAccessToken("gopher.token")
 	if err != nil {

@@ -1,9 +1,9 @@
 package commands
 
 import (
-	"../cmd"
 	"../config"
-	"../models"
+	"../git"
+	"../mirage"
 	"code.google.com/p/goauth2/oauth"
 	"fmt"
 	"github.com/google/go-github/github"
@@ -32,7 +32,7 @@ func topicLaunch(args []string) (string, error) {
 
 func (tl *TopicLaunch) Exec() (string, error) {
 	conf := config.LoadConfig()
-	git := &models.Git{WorkDir: conf.GitWorkDir}
+	git := &git.Git{WorkDir: conf.GitWorkDir}
 
 	token, err := git.FetchAccessToken("gopher.token")
 	if err != nil {
@@ -62,12 +62,8 @@ func (tl *TopicLaunch) Exec() (string, error) {
 	git.Merge("origin/" + ref + "-assetbundle")
 	git.PushRemote(deployRefName)
 
-	c := cmd.Cmd{
-		Name: "curl",
-		Args: []string{conf.MirageUrl, "-d", "subdomain=" + tl.Subdomain, "-d", "branch=" + deployRefName, "-d", "image=" + conf.DockerImage},
-	}
-
-	if _, err := c.Exec(); err != nil {
+	mirage := &mirage.Mirage{Subdomain: tl.Subdomain, BranchName: deployRefName}
+	if _, err := mirage.Launch(); err != nil {
 		return "", err
 	}
 

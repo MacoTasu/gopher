@@ -2,7 +2,7 @@ package commands
 
 import (
 	"../config"
-	"../models"
+	"../git"
 	"code.google.com/p/goauth2/oauth"
 	"fmt"
 	"github.com/google/go-github/github"
@@ -34,7 +34,7 @@ func topicCreate(args []string) (string, error) {
 
 func (tc *TopicCreate) Exec() (string, error) {
 	conf := config.LoadConfig()
-	git := &models.Git{WorkDir: conf.GitWorkDir}
+	git := &git.Git{WorkDir: conf.GitWorkDir}
 
 	token, err := git.FetchAccessToken("gopher.token")
 	if err != nil {
@@ -98,7 +98,7 @@ func (tc *TopicCreate) Exec() (string, error) {
 	return "ʕ ◔ϖ◔ʔ < ブランチ作成したよ", nil
 }
 
-func (tc *TopicCreate) createAndPullRequest(git *models.Git, client *github.Client, topicCreateRequest *TopicCreateRequest) (err error) {
+func (tc *TopicCreate) createAndPullRequest(git *git.Git, client *github.Client, topicCreateRequest *TopicCreateRequest) (err error) {
 	branchName := topicCreateRequest.Head
 	git.CreateBranch(branchName)
 	git.EmptyCommit()

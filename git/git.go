@@ -1,4 +1,4 @@
-package models
+package git
 
 import (
 	"../cmd"

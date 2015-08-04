@@ -1,9 +1,9 @@
 package commands
 
 import (
-	"../cmd"
 	"../config"
-	"../models"
+	"../git"
+	"../mirage"
 	"fmt"
 )
 
@@ -23,7 +23,7 @@ func launch(args []string) (string, error) {
 
 func (l *Launch) Exec() (string, error) {
 	conf := config.LoadConfig()
-	git := &models.Git{WorkDir: conf.GitWorkDir}
+	git := &git.Git{WorkDir: conf.GitWorkDir}
 
 	if _, err := git.Fetch(); err != nil {
 		return "", err
@@ -33,12 +33,8 @@ func (l *Launch) Exec() (string, error) {
 		return "", err
 	}
 
-	c := cmd.Cmd{
-		Name: "curl",
-		Args: []string{conf.MirageUrl, "-d", "subdomain=" + l.Subdomain, "-d", "branch=" + l.BranchName, "-d", "image=" + conf.DockerImage},
-	}
-
-	if _, err := c.Exec(); err != nil {
+	mirage := &mirage.Mirage{Subdomain: l.Subdomain, BranchName: l.BranchName}
+	if _, err := mirage.Launch(); err != nil {
 		return "", err
 	}
 
