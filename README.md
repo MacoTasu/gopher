@@ -28,7 +28,7 @@ github PR numberはtestブランチがmasterブランチに対して作成した
 ## launch
 指定したブランチが展開された環境に、指定のサブドメイン経由でアクセス出来る環境を構築します。
 ```shell
-gopher: launch <domain_name> <github PR number>
+gopher: launch <domain_name> <branch_name>
 ```
 github PR numberはtestブランチがmasterブランチに対して作成したPullRequestのissue番号を書いてください。
 
