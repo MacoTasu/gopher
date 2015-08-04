@@ -9,8 +9,8 @@ import (
 // Linux only
 func FreeMemoryPercentage() (int, error) {
 	c := cmd.Cmd{
-		Name: "free",
-		Args: []string{"|", "grep", "Mem"},
+		Name: "cat",
+		Args: []string{"/proc/meminfo"},
 	}
 
 	result, err := c.Exec()
@@ -20,25 +20,15 @@ func FreeMemoryPercentage() (int, error) {
 
 	memories := strings.Split(string(result), " ")
 
-	totalMem, err := strconv.Atoi(memories[1])
+	totalMem, err := strconv.Atoi(memories[7])
 	if err != nil {
 		return 0, err
 	}
 
-	freeMem, err := strconv.Atoi(memories[3])
+	freeMem, err := strconv.Atoi(memories[21])
 	if err != nil {
 		return 0, err
 	}
 
-	bufferMem, err := strconv.Atoi(memories[5])
-	if err != nil {
-		return 0, err
-	}
-
-	cachedMem, err := strconv.Atoi(memories[6])
-	if err != nil {
-		return 0, err
-	}
-
-	return totalMem/freeMem + bufferMem + cachedMem, nil
+	return totalMem / freeMem, nil
 }
