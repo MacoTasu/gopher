@@ -10,7 +10,7 @@ import (
 func FreeMemoryPercentage() (int, error) {
 	c := cmd.Cmd{
 		Name: "free",
-		Args: []string{"|", "grep", "-E", "Mem"},
+		Args: []string{"|", "grep", "Mem"},
 	}
 
 	result, err := c.Exec()
