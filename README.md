@@ -29,7 +29,7 @@ github PR numberはtestブランチがmasterブランチに対して作成した
 指定したブランチが展開された環境に、指定のサブドメイン経由でアクセス出来る環境を構築します。
 ```shell
 gopher: launch <domain_name> <branch_name>
-```。
+```
 
 ## help
 ヘルプです。READMEを投げつけます。
