@@ -7,7 +7,7 @@ import (
 )
 
 // Linux only
-func FreeMemoryPercentage() (int, error) {
+func FreeMemoryPercentage() (float64, error) {
 	c := cmd.Cmd{
 		Name: "cat",
 		Args: []string{"/proc/meminfo"},
@@ -30,5 +30,5 @@ func FreeMemoryPercentage() (int, error) {
 		return 0, err
 	}
 
-	return totalMem / freeMem, nil
+	return float64((freeMem / totalMem)), nil
 }
