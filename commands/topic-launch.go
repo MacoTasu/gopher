@@ -56,6 +56,7 @@ func (tl *TopicLaunch) Exec() (string, error) {
 	now := time.Now()
 	git.Fetch()
 	git.CheckoutBranch(ref)
+	git.Pull()
 	deployRefName := fmt.Sprintf("gopher/%s-%02d%02d.%02d%02d", ref, now.Month(), now.Day(), now.Hour(), now.Minute())
 	git.CreateBranch(deployRefName)
 	git.Merge("origin/" + ref + "-masterdata")

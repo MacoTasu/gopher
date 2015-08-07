@@ -24,6 +24,16 @@ func (g *Git) Fetch() (string, error) {
 	return c.Exec()
 }
 
+func (g *Git) Pull() (string, error) {
+
+	c := cmd.Cmd{
+		Name: "git",
+		Args: g.appendGitOptions([]string{"pull"}),
+	}
+
+	return c.Exec()
+}
+
 func (g *Git) EmptyCommit() (string, error) {
 
 	c := cmd.Cmd{
