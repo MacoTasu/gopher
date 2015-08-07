@@ -58,6 +58,10 @@ func (tc *TopicCreate) Exec() (string, error) {
 		return "", err
 	}
 
+	if _, err := git.Pull(); err != nil {
+		return "", err
+	}
+
 	if err := tc.createAndPullRequest(git, client, &TopicCreateRequest{
 		Owner: owner,
 		Repo:  repo,
