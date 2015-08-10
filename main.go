@@ -74,10 +74,6 @@ func main() {
 		con.SendMessage(prefix + "< きっと大丈夫やで")
 	})
 
-	con.AddDefaultAction(func(e *ape.Event) {
-		con.SendMessage(prefix + "？？")
-	})
-
 	con.AddAction("ほんわかぽにゃぽにゃ", func(e *ape.Event) {
 		con.Part(con.Channel())
 		con.Join(con.Channel())
