@@ -22,7 +22,7 @@ func main() {
 	con.RegisterChannel(conf.Channel)
 
 	con.AddAction("topic-deploy", func(e *ape.Event) {
-		con.SendMessage(prefix + "<" + "topic-deploy not ybsk")
+		con.SendMessage(prefix + "< " + "topic-deploy not ybsk")
 		result, err := commands.TopicDeploy(e.Command().Args())
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
@@ -32,7 +32,7 @@ func main() {
 	})
 
 	con.AddAction("topic-create", func(e *ape.Event) {
-		con.SendMessage(prefix + "<" + "topic-create not ybsk")
+		con.SendMessage(prefix + "< " + "topic-create not ybsk")
 		result, err := commands.TopicCreate(e.Command().Args())
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
@@ -42,7 +42,7 @@ func main() {
 	})
 
 	con.AddAction("topic-launch", func(e *ape.Event) {
-		con.SendMessage(prefix + "<" + "topic-launch not ybsk")
+		con.SendMessage(prefix + "< " + "topic-launch not ybsk")
 		result, err := commands.TopicLaunch(e.Command().Args())
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
@@ -52,7 +52,7 @@ func main() {
 	})
 
 	con.AddAction("launch", func(e *ape.Event) {
-		con.SendMessage(prefix + "<" + "launch not ybsk")
+		con.SendMessage(prefix + "< " + "launch not ybsk")
 		result, err := commands.Launch(e.Command().Args())
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
