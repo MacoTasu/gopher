@@ -78,5 +78,10 @@ func main() {
 		con.SendMessage(prefix + "？？")
 	})
 
+	con.AddAction("ほんわかぽにゃぽにゃ", func(e *ape.Event) {
+		con.Part(con.Channel())
+		con.Join(con.Channel())
+	})
+
 	con.Loop()
 }
