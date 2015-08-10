@@ -11,12 +11,12 @@ import (
 	"time"
 )
 
-type TopicLaunch struct {
+type TopicLaunchOpts struct {
 	Subdomain   string
 	IssueNumber int
 }
 
-func topicLaunch(args []string) (string, error) {
+func TopicLaunch(args []string) (string, error) {
 	if len(args) < 2 {
 		return "", fmt.Errorf("not enough argument")
 	}
@@ -26,11 +26,11 @@ func topicLaunch(args []string) (string, error) {
 		return "", err
 	}
 
-	tl := &TopicLaunch{Subdomain: args[0], IssueNumber: number}
+	tl := &TopicLaunchOpts{Subdomain: args[0], IssueNumber: number}
 	return tl.Exec()
 }
 
-func (tl *TopicLaunch) Exec() (string, error) {
+func (tl *TopicLaunchOpts) Exec() (string, error) {
 	conf := config.LoadConfig()
 	git := &git.Git{WorkDir: conf.GitWorkDir}
 
@@ -71,7 +71,7 @@ func (tl *TopicLaunch) Exec() (string, error) {
 	return fmt.Sprintf("ʕ ◔ϖ◔ʔ < %s に %s で環境作成したよ！", tl.Subdomain, deployRefName), nil
 }
 
-func (tl *TopicLaunch) fetchPullRequestHeadRef(client *github.Client, owner string, repo string) (string, error) {
+func (tl *TopicLaunchOpts) fetchPullRequestHeadRef(client *github.Client, owner string, repo string) (string, error) {
 	pull, _, err := client.PullRequests.Get(owner, repo, tl.IssueNumber)
 	if err != nil {
 		return "", err

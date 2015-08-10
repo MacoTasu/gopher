@@ -11,13 +11,13 @@ import (
 	"time"
 )
 
-type TopicDeploy struct {
+type TopicDeployOpts struct {
 	ServerName  string
 	IssueNumber int
 	Options     []string
 }
 
-func topicDeploy(args []string) (string, error) {
+func TopicDeploy(args []string) (string, error) {
 	if len(args) < 2 {
 		return "", fmt.Errorf("not enough argument")
 	}
@@ -27,11 +27,11 @@ func topicDeploy(args []string) (string, error) {
 		return "", err
 	}
 
-	td := &TopicDeploy{ServerName: args[0], IssueNumber: number, Options: args[2:]}
+	td := &TopicDeployOpts{ServerName: args[0], IssueNumber: number, Options: args[2:]}
 	return td.Exec()
 }
 
-func (td *TopicDeploy) Exec() (string, error) {
+func (td *TopicDeployOpts) Exec() (string, error) {
 	conf := config.LoadConfig()
 	git := &git.Git{WorkDir: conf.GitWorkDir}
 
@@ -72,7 +72,7 @@ func (td *TopicDeploy) Exec() (string, error) {
 	return message, nil
 }
 
-func (td *TopicDeploy) fetchPullRequestHeadRef(client *github.Client, owner string, repo string) (string, error) {
+func (td *TopicDeployOpts) fetchPullRequestHeadRef(client *github.Client, owner string, repo string) (string, error) {
 	pull, _, err := client.PullRequests.Get(owner, repo, td.IssueNumber)
 	if err != nil {
 		return "", err

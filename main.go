@@ -4,46 +4,79 @@ import (
 	"./commands"
 	"./config"
 	"fmt"
-	"github.com/thoj/go-ircevent"
+	"github.com/m0t0k1ch1/ape"
 	"log"
-	"strings"
 )
 
 func main() {
 	conf := config.LoadConfig()
-	ircobj := irc.IRC("gopher", "gopher")
-	ircobj.UseTLS = true
-	ircobj.Password = conf.Password
-	prefix := "ʕ ◔ϖ◔ʔ < "
-	if err := ircobj.Connect(conf.Server); err != nil {
+	con := ape.NewConnection("gopher", "gopher")
+	con.UseTLS = true
+	con.Password = conf.Password
+	prefix := "ʕ ◔ϖ◔ʔ "
+
+	if err := con.Connect(conf.Server); err != nil {
 		log.Fatal(err)
 	}
 
-	ircobj.AddCallback("001", func(e *irc.Event) {
-		ircobj.Join(conf.Channel)
-	})
+	con.RegisterChannel(conf.Channel)
 
-	ircobj.AddCallback("PRIVMSG", func(e *irc.Event) {
-		msgs := strings.Split(string(e.Message()), " ")
-
-		if len(msgs) >= 2 && (strings.EqualFold(msgs[0], "gopher:") || strings.EqualFold(msgs[0], "gopher")) {
-			cmd := &commands.Command{}
-			err := cmd.FetchFunc(msgs[1:])
-			if err != nil {
-				ircobj.Privmsg(conf.Channel, prefix+fmt.Sprintln(err))
-				return
-			}
-
-			ircobj.Notice(conf.Channel, prefix+msgs[1]+" not ybsk")
-
-			result, err := cmd.Call()
-			if err != nil {
-				ircobj.Privmsg(conf.Channel, prefix+fmt.Sprintln(err))
-			} else {
-				ircobj.Privmsg(conf.Channel, result)
-			}
+	con.AddAction("topic-deploy", func(e *ape.Event) {
+		con.SendMessage(prefix + "<" + "topic-deploy not ybsk")
+		result, err := commands.TopicDeploy(e.Command().Args())
+		if err != nil {
+			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
+		} else {
+			con.SendMessage(result)
 		}
 	})
 
-	ircobj.Loop()
+	con.AddAction("topic-create", func(e *ape.Event) {
+		con.SendMessage(prefix + "<" + "topic-create not ybsk")
+		result, err := commands.TopicCreate(e.Command().Args())
+		if err != nil {
+			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
+		} else {
+			con.SendMessage(result)
+		}
+	})
+
+	con.AddAction("topic-launch", func(e *ape.Event) {
+		con.SendMessage(prefix + "<" + "topic-launch not ybsk")
+		result, err := commands.TopicLaunch(e.Command().Args())
+		if err != nil {
+			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
+		} else {
+			con.SendMessage(result)
+		}
+	})
+
+	con.AddAction("launch", func(e *ape.Event) {
+		con.SendMessage(prefix + "<" + "launch not ybsk")
+		result, err := commands.Launch(e.Command().Args())
+		if err != nil {
+			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
+		} else {
+			con.SendMessage(result)
+		}
+	})
+
+	con.AddAction("help", func(e *ape.Event) {
+		result, err := commands.Help(e.Command().Args())
+		if err != nil {
+			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
+		} else {
+			con.SendMessage(result)
+		}
+	})
+
+	con.AddAction("pray", func(e *ape.Event) {
+		con.SendMessage(prefix + "< きっと大丈夫やで")
+	})
+
+	con.AddDefaultAction(func(e *ape.Event) {
+		con.SendMessage(prefix + "？？")
+	})
+
+	con.Loop()
 }

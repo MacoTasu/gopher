@@ -7,21 +7,21 @@ import (
 	"fmt"
 )
 
-type Launch struct {
+type LaunchOpts struct {
 	Subdomain  string
 	BranchName string
 }
 
-func launch(args []string) (string, error) {
+func Launch(args []string) (string, error) {
 	if len(args) < 2 {
 		return "", fmt.Errorf("not enough argument")
 	}
 
-	l := &Launch{Subdomain: args[0], BranchName: args[1]}
+	l := &LaunchOpts{Subdomain: args[0], BranchName: args[1]}
 	return l.Exec()
 }
 
-func (l *Launch) Exec() (string, error) {
+func (l *LaunchOpts) Exec() (string, error) {
 	conf := config.LoadConfig()
 	git := &git.Git{WorkDir: conf.GitWorkDir}
 

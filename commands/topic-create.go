@@ -8,7 +8,7 @@ import (
 	"github.com/google/go-github/github"
 )
 
-type TopicCreate struct {
+type TopicCreateOpts struct {
 	Prefix      string
 	BranchName  string
 	IssueNumber string
@@ -23,16 +23,16 @@ type TopicCreateRequest struct {
 	Body  string
 }
 
-func topicCreate(args []string) (string, error) {
+func TopicCreate(args []string) (string, error) {
 	if len(args) < 2 {
 		return "", fmt.Errorf("not enough argument")
 	}
 
-	tc := &TopicCreate{Prefix: "topic/", BranchName: args[0], IssueNumber: args[1]}
+	tc := &TopicCreateOpts{Prefix: "topic/", BranchName: args[0], IssueNumber: args[1]}
 	return tc.Exec()
 }
 
-func (tc *TopicCreate) Exec() (string, error) {
+func (tc *TopicCreateOpts) Exec() (string, error) {
 	conf := config.LoadConfig()
 	git := &git.Git{WorkDir: conf.GitWorkDir}
 
@@ -102,7 +102,7 @@ func (tc *TopicCreate) Exec() (string, error) {
 	return "ʕ ◔ϖ◔ʔ < ブランチ作成したよ", nil
 }
 
-func (tc *TopicCreate) createAndPullRequest(git *git.Git, client *github.Client, topicCreateRequest *TopicCreateRequest) (err error) {
+func (tc *TopicCreateOpts) createAndPullRequest(git *git.Git, client *github.Client, topicCreateRequest *TopicCreateRequest) (err error) {
 	branchName := topicCreateRequest.Head
 	git.CreateBranch(branchName)
 	git.EmptyCommit()
@@ -125,6 +125,6 @@ func (tc *TopicCreate) createAndPullRequest(git *git.Git, client *github.Client,
 	return err
 }
 
-func (tc *TopicCreate) baseBranchName() string {
+func (tc *TopicCreateOpts) baseBranchName() string {
 	return tc.Prefix + tc.BranchName
 }
