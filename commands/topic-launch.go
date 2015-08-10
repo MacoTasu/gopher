@@ -68,7 +68,7 @@ func (tl *TopicLaunchOpts) Exec() (string, error) {
 		return "", err
 	}
 
-	return fmt.Sprintf("ʕ ◔ϖ◔ʔ < %s に %s で環境依頼をだしたよ！", tl.Subdomain, deployRefName), nil
+	return fmt.Sprintf("ʕ ◔ϖ◔ʔ < %s に %s で環境作成依頼をだしたよ！", tl.Subdomain, deployRefName), nil
 }
 
 func (tl *TopicLaunchOpts) fetchPullRequestHeadRef(client *github.Client, owner string, repo string) (string, error) {
