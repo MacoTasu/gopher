@@ -13,6 +13,7 @@ type ConfData struct {
 	PullRequestComment string `yaml:"pull_request_comment"`
 	MirageUrl          string `yaml:"mirage_url"`
 	DockerImage        string `yaml:"docker_image"`
+	AfterImage         string `yaml:"after_image"`
 }
 
 // conf.ymlをロードし構造体へ格納

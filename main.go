@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"github.com/m0t0k1ch1/ape"
 	"log"
+	"math/rand"
+	"time"
 )
 
 func main() {
@@ -48,6 +50,12 @@ func main() {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {
 			con.SendMessage(result)
+
+			// 必要ない処理だったりする
+			rand.Seed(time.Now().UnixNano())
+			if rand.Intn(3) == 0 {
+				con.SendMessage(conf.AfterImage)
+			}
 		}
 	})
 
