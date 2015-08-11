@@ -53,14 +53,33 @@ func (tl *TopicLaunchOpts) Exec() (string, error) {
 		return "", err
 	}
 
+	if _, err := git.Fetch(); err != nil {
+		return "", err
+	}
+
+	if _, err := git.CheckoutBranch(ref); err != nil {
+		return "", err
+	}
+
+	if _, err := git.Pull(); err != nil {
+		return "", err
+	}
+
 	now := time.Now()
-	git.Fetch()
-	git.CheckoutBranch(ref)
-	git.Pull()
 	deployRefName := fmt.Sprintf("gopher/%s-%02d%02d.%02d%02d", ref, now.Month(), now.Day(), now.Hour(), now.Minute())
-	git.CreateBranch(deployRefName)
-	git.Merge("origin/" + ref + "-masterdata")
-	git.Merge("origin/" + ref + "-assetbundle")
+
+	if _, err := git.CreateBranch(deployRefName); err != nil {
+		return "", err
+	}
+
+	if _, err := git.Merge("origin/" + ref + "-masterdata"); err != nil {
+		return "", err
+	}
+
+	if _, err := git.Merge("origin/" + ref + "-assetbundle"); err != nil {
+		return "", err
+	}
+
 	git.PushRemote(deployRefName)
 
 	mirage := &mirage.Mirage{Subdomain: tl.Subdomain, BranchName: deployRefName}

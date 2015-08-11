@@ -55,13 +55,31 @@ func (td *TopicDeployOpts) Exec() (string, error) {
 	}
 
 	now := time.Now()
-	git.Fetch()
-	git.CheckoutBranch(ref)
-	git.Pull()
+	if _, err := git.Fetch(); err != nil {
+		return "", err
+	}
+
+	if _, err := git.CheckoutBranch(ref); err != nil {
+		return "", err
+	}
+
+	if _, err := git.Pull(); err != nil {
+		return "", err
+	}
 	deployRefName := fmt.Sprintf("jenkins/%s-%02d%02d.%02d%02d", ref, now.Month(), now.Day(), now.Hour(), now.Minute())
-	git.CreateBranch(deployRefName)
-	git.Merge("origin/" + ref + "-masterdata")
-	git.Merge("origin/" + ref + "-assetbundle")
+
+	if _, err := git.CreateBranch(deployRefName); err != nil {
+		return "", err
+	}
+
+	if _, err := git.Merge("origin/" + ref + "-masterdata"); err != nil {
+		return "", err
+	}
+
+	if _, err := git.Merge("origin/" + ref + "-assetbundle"); err != nil {
+		return "", err
+	}
+
 	git.PushRemote(deployRefName)
 
 	message := fmt.Sprintf("akane: deploy %s %s", td.ServerName, deployRefName)
