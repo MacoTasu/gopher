@@ -2,8 +2,8 @@ package util
 
 import (
 	"../cmd"
+	"regexp"
 	"strconv"
-	"strings"
 )
 
 // Linux only
@@ -18,17 +18,18 @@ func FreeMemoryPercentage() (float64, error) {
 		return 0, err
 	}
 
-	memories := strings.Split(string(result), " ")
+	pattern := `^([0-9]+)`
+	memories := regexp.MustCompile(pattern).FindStringSubmatch(result)
 
-	totalMem, err := strconv.Atoi(memories[7])
+	totalMem, err := strconv.Atoi(memories[0])
 	if err != nil {
 		return 0, err
 	}
 
-	freeMem, err := strconv.Atoi(memories[21])
+	availableMem, err := strconv.Atoi(memories[2])
 	if err != nil {
 		return 0, err
 	}
 
-	return float64((freeMem / totalMem)), nil
+	return float64((availableMem / totalMem)), nil
 }

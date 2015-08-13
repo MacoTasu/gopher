@@ -18,8 +18,8 @@ func (m *Mirage) Launch() (string, error) {
 		return "", err
 	}
 
-	if percentage > 0.79 {
-		return "", fmt.Errorf(fmt.Sprintf("Can't launch. UsedMemory: %f %", percentage))
+	if percentage <= 0.4 {
+		return "", fmt.Errorf(fmt.Sprintf("Can't launch. AvailableMemory: %f %", percentage))
 	}
 
 	conf := config.LoadConfig()
