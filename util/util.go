@@ -27,7 +27,7 @@ func FreeMemoryPercentage() (int, error) {
 		return 0, err
 	}
 
-	return (availableMem / totalMem) * 100, nil
+	return int((availableMem / totalMem) * 100), nil
 }
 
 func meminfo() (string, error) {
