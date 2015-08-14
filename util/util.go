@@ -2,7 +2,6 @@ package util
 
 import (
 	"../cmd"
-	"github.com/k0kubun/pp"
 	"regexp"
 	"strconv"
 )
