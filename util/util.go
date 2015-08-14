@@ -9,7 +9,7 @@ import (
 var meminfoFunc = meminfo
 
 // Linux only
-func FreeMemoryPercentage() (float64, error) {
+func FreeMemoryPercentage() (int, error) {
 	result, err := meminfoFunc()
 	if err != nil {
 		return 0, err
@@ -27,7 +27,7 @@ func FreeMemoryPercentage() (float64, error) {
 		return 0, err
 	}
 
-	return float64(availableMem / totalMem), nil
+	return (availableMem / totalMem) * 100, nil
 }
 
 func meminfo() (string, error) {
