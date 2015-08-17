@@ -53,7 +53,7 @@ func main() {
 
 			// 必要ない処理だったりする
 			rand.Seed(time.Now().UnixNano())
-			if rand.Intn(3) == 0 {
+			if rand.Intn(10) == 0 {
 				con.SendMessage(conf.AfterImage)
 			}
 		}
@@ -62,6 +62,16 @@ func main() {
 	con.AddAction("launch", func(e *ape.Event) {
 		con.SendMessage(prefix + "< " + "launch not ybsk")
 		result, err := commands.Launch(e.Command().Args())
+		if err != nil {
+			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
+		} else {
+			con.SendMessage(result)
+		}
+	})
+
+	con.AddAction("deploy", func(e *ape.Event) {
+		con.SendMessage(prefix + "< " + "deploy not ybsk")
+		result, err := commands.Deploy(e.Command().Args())
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {
