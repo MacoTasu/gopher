@@ -18,6 +18,12 @@ gopher: topic-deploy <server_name> <github PR number>
 github PR numberはtestブランチがmasterブランチに対して作成したPullRequestのissue番号を書いてください。
 issue番号からtopic-createで作成されたブランチを探し出し、新たしいブランチを作成後一つにマージします。
 
+## deploy
+指定した環境にブランチをデプロイします。
+```shell
+gopher: deploy <server_name> <branch_name>
+```
+
 ## topic-launch
 topic-createで作成されたブランチを一つにマージし、指定のサブドメイン経由でアクセス出来る環境を構築します。
 ```shell
