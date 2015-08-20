@@ -92,6 +92,16 @@ func main() {
 		con.SendMessage(prefix + "< きっと大丈夫やで")
 	})
 
+	con.AddAction("yoshina", func(e *ape.Event) {
+		con.SendMessage(prefix + "< " + "yoshina not ybsk")
+		result, err := commands.Yoshina(e.Command().Args())
+		if err != nil {
+			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
+		} else {
+			con.SendMessage(result)
+		}
+	})
+
 	con.AddAction("ほんわかぽにゃぽにゃ", func(e *ape.Event) {
 		con.Part(con.Channel())
 		con.Join(con.Channel())
