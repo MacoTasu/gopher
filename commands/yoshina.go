@@ -55,6 +55,6 @@ func (y *YoshinaOpts) Exec() (string, error) {
 
 	git.PushRemote(baseBranch)
 
-	message := fmt.Sprintf("gopher: launch %s %s", y.Subdomain, baseBranch)
+	message := fmt.Sprintf("akane: launch %s %s", y.Subdomain, baseBranch)
 	return message, nil
 }
