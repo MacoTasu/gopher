@@ -3,7 +3,6 @@ package commands
 import (
 	"../config"
 	"../git"
-	"../mirage"
 	"fmt"
 	"strings"
 )
@@ -56,10 +55,6 @@ func (y *YoshinaOpts) Exec() (string, error) {
 
 	git.PushRemote(baseBranch)
 
-	mirage := &mirage.Mirage{Subdomain: y.Subdomain, BranchName: baseBranch}
-	if _, err := mirage.Launch(); err != nil {
-		return "", err
-	}
-
-	return fmt.Sprintf("ʕ ◔ϖ◔ʔ < %s に %s で環境作成依頼をだしたよ！", y.Subdomain, baseBranch), nil
+	message := fmt.Sprintf("akane: launch %s %s", y.Subdomain, baseBranch)
+	return message, nil
 }
