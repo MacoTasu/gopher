@@ -48,12 +48,3 @@ gopher: help
 ```shell
 gopher: pray
 ```
-
-## yoshina
-カンマ区切りで指定したブランチ群を、先頭のブランチによしなにマージして、launchします。
-```shell
-gopher: yoshina <domain_name> <branch_name>
-
-// example
-gopher: yoshina hoge feature/base,feature/children-1,...
-```
