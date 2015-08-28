@@ -35,7 +35,7 @@ func (github *Github) FetchPullRequestHeadRef(IssueNumber int, owner string, rep
 		return nil, err
 	}
 
-	pattern := `merge: ([a-zA-Z0-9,/\-_]+)`
+	pattern := `merge: ([a-zA-Z0-9,/\-_\.]+)`
 	result := regexp.MustCompile(pattern).FindString(*pull.Body)
 	mergeBranchName := strings.Replace(result, "merge: ", "", -1)
 	branches := strings.Split(mergeBranchName, ",")
