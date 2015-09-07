@@ -6,14 +6,15 @@ import (
 )
 
 type ConfData struct {
-	Password           string `yaml:"password"`
-	Server             string `yaml:"server"`
-	Channel            string `yaml:"channel"`
-	GitWorkDir         string `yaml:"git_work_dir"`
-	PullRequestComment string `yaml:"pull_request_comment"`
-	MirageUrl          string `yaml:"mirage_url"`
-	DockerImage        string `yaml:"docker_image"`
-	AfterImage         string `yaml:"after_image"`
+	Password           string   `yaml:"password"`
+	Server             string   `yaml:"server"`
+	Channel            string   `yaml:"channel"`
+	GitWorkDir         string   `yaml:"git_work_dir"`
+	PullRequestComment string   `yaml:"pull_request_comment"`
+	MirageUrl          string   `yaml:"mirage_url"`
+	DockerImage        string   `yaml:"docker_image"`
+	AfterImage         string   `yaml:"after_image"`
+	PullRequestLabels  []string `yaml:"pull_request_labels"`
 }
 
 // conf.ymlをロードし構造体へ格納

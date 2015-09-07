@@ -62,6 +62,8 @@ func (tc *TopicCreateOpts) Exec() (string, error) {
 		return "", err
 	}
 
+	labels := conf.PullRequestLabels
+
 	if err := tc.createAndPullRequest(git, client, &TopicCreateRequest{
 		Owner: owner,
 		Repo:  repo,
@@ -69,7 +71,7 @@ func (tc *TopicCreateOpts) Exec() (string, error) {
 		Head:  tc.baseBranchName(),
 		Title: tc.baseBranchName(),
 		Body:  conf.PullRequestComment + tc.IssueNumber,
-	}); err != nil {
+	}, labels); err != nil {
 		return "", err
 	}
 
@@ -80,7 +82,7 @@ func (tc *TopicCreateOpts) Exec() (string, error) {
 		Head:  tc.baseBranchName() + "-masterdata",
 		Title: tc.baseBranchName() + "-masterdata",
 		Body:  "",
-	}); err != nil {
+	}, labels); err != nil {
 		return "", err
 	}
 
@@ -95,14 +97,14 @@ func (tc *TopicCreateOpts) Exec() (string, error) {
 		Head:  tc.baseBranchName() + "-assetbundle",
 		Title: tc.baseBranchName() + "-assetbundle",
 		Body:  "",
-	}); err != nil {
+	}, labels); err != nil {
 		return "", err
 	}
 
 	return "ʕ ◔ϖ◔ʔ < ブランチ作成したよ", nil
 }
 
-func (tc *TopicCreateOpts) createAndPullRequest(git *git.Git, client *github.Client, topicCreateRequest *TopicCreateRequest) (err error) {
+func (tc *TopicCreateOpts) createAndPullRequest(git *git.Git, client *github.Client, topicCreateRequest *TopicCreateRequest, labels []string) (err error) {
 	branchName := topicCreateRequest.Head
 	git.CreateBranch(branchName)
 	git.EmptyCommit()
@@ -115,14 +117,23 @@ func (tc *TopicCreateOpts) createAndPullRequest(git *git.Git, client *github.Cli
 	base := topicCreateRequest.Base
 	title := topicCreateRequest.Title
 	body := topicCreateRequest.Body
-	_, _, err = client.PullRequests.Create(owner, repo, &github.NewPullRequest{
+	pull, _, pr_err := client.PullRequests.Create(owner, repo, &github.NewPullRequest{
 		Title: &title,
 		Head:  &head,
 		Base:  &base,
 		Body:  &body,
 	})
 
-	return err
+	if pr_err != nil {
+		return pr_err
+	}
+
+	_, _, label_err := client.Issues.AddLabelsToIssue(owner, repo, *pull.Number, labels)
+	if label_err != nil {
+		return label_err
+	}
+
+	return nil
 }
 
 func (tc *TopicCreateOpts) baseBranchName() string {
