@@ -6,6 +6,7 @@ import (
 	"code.google.com/p/goauth2/oauth"
 	"fmt"
 	"github.com/google/go-github/github"
+	"log"
 )
 
 type TopicCreateOpts struct {
@@ -117,20 +118,16 @@ func (tc *TopicCreateOpts) createAndPullRequest(git *git.Git, client *github.Cli
 	base := topicCreateRequest.Base
 	title := topicCreateRequest.Title
 	body := topicCreateRequest.Body
-	pull, _, pr_err := client.PullRequests.Create(owner, repo, &github.NewPullRequest{
+	pull, _, _ := client.PullRequests.Create(owner, repo, &github.NewPullRequest{
 		Title: &title,
 		Head:  &head,
 		Base:  &base,
 		Body:  &body,
 	})
 
-	if pr_err != nil {
-		return pr_err
-	}
-
 	_, _, label_err := client.Issues.AddLabelsToIssue(owner, repo, *pull.Number, labels)
 	if label_err != nil {
-		return label_err
+		log.Println(label_err)
 	}
 
 	return nil
