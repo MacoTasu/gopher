@@ -37,6 +37,13 @@ github PR numberはtestブランチがmasterブランチに対して作成した
 gopher: launch <domain_name> <branch_name>
 ```
 
+## topic-merge
+topic-createで作成されたブランチを一つのブランチにして、masterにマージ後プッシュします。
+```shell
+gopher: topic-merge <topic/以下の名前部分>
+```
+issueから検索するのではなく、指定された名前に紐づく、topic/*-masterdata, topic/*-assetbundleを探してマージします。
+
 ## help
 ヘルプです。READMEを投げつけます。
 ```shell
