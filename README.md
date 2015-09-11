@@ -40,7 +40,7 @@ gopher: launch <domain_name> <branch_name>
 ## topic-merge
 topic-createで作成されたブランチを一つのブランチにして、masterにマージ後プッシュします。
 ```shell
-gopher: topic-merge <topic/以下の名前部分>
+gopher: topic-merge hoge
 ```
 issueから検索するのではなく、指定された名前に紐づく、topic/hoge-masterdata, topic/hoge-assetbundleを探してマージします。
 
