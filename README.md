@@ -42,7 +42,7 @@ topic-createで作成されたブランチを一つのブランチにして、ma
 ```shell
 gopher: topic-merge <topic/以下の名前部分>
 ```
-issueから検索するのではなく、指定された名前に紐づく、topic/*-masterdata, topic/*-assetbundleを探してマージします。
+issueから検索するのではなく、指定された名前に紐づく、topic/hoge-masterdata, topic/hoge-assetbundleを探してマージします。
 
 ## help
 ヘルプです。READMEを投げつけます。
