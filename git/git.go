@@ -84,6 +84,16 @@ func (g *Git) PushRemote(branchName string) (string, error) {
 	return c.Exec()
 }
 
+func (g *Git) Push() (string, error) {
+
+	c := cmd.Cmd{
+		Name: "git",
+		Args: g.appendGitOptions([]string{"push"}),
+	}
+
+	return c.Exec()
+}
+
 func (g *Git) FetchAccessToken(keyName string) (string, error) {
 
 	c := cmd.Cmd{

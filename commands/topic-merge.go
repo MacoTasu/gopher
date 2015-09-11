@@ -46,7 +46,7 @@ func (tm *TopicMergeOpts) Exec() (string, error) {
 		return "", err
 	}
 
-	git.PushRemote(baseBranch)
+	git.Push()
 
 	if _, err := git.CheckoutBranch("master"); err != nil {
 		return "", err
@@ -59,6 +59,8 @@ func (tm *TopicMergeOpts) Exec() (string, error) {
 	if _, err := git.Merge(baseBranch); err != nil {
 		return "", err
 	}
+
+	git.Push()
 
 	return tm.BranchName + " をmergeしたよ", nil
 }
