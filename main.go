@@ -23,6 +23,16 @@ func main() {
 
 	con.RegisterChannel(conf.Channel)
 
+	con.AddAction("topic-merge", func(e *ape.Event) {
+		con.SendMessage(prefix + "< " + "topic-merge not ybsk")
+		result, err := commands.TopicMerge(e.Command().Args())
+		if err != nil {
+			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
+		} else {
+			con.SendMessage(result)
+		}
+	})
+
 	con.AddAction("topic-deploy", func(e *ape.Event) {
 		con.SendMessage(prefix + "< " + "topic-deploy not ybsk")
 		result, err := commands.TopicDeploy(e.Command().Args())
