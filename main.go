@@ -1,25 +1,19 @@
 package main
 
 import (
-	"./commands"
-	"./config"
 	"fmt"
-	"github.com/m0t0k1ch1/ape"
-	"log"
 	"math/rand"
 	"time"
+
+	"./commands"
+	"./config"
+	"github.com/shogo82148/ape-slack"
 )
 
 func main() {
 	conf := config.LoadConfig()
-	con := ape.NewConnection("gopher", "gopher")
-	con.UseTLS = true
-	con.Password = conf.Password
+	con := ape.NewConnection(conf.Token)
 	prefix := "ʕ ◔ϖ◔ʔ "
-
-	if err := con.Connect(conf.Server); err != nil {
-		log.Fatal(err)
-	}
 
 	con.RegisterChannel(conf.Channel)
 
@@ -100,11 +94,6 @@ func main() {
 
 	con.AddAction("pray", func(e *ape.Event) {
 		con.SendMessage(prefix + "< きっと大丈夫やで")
-	})
-
-	con.AddAction("ほんわかぽにゃぽにゃ", func(e *ape.Event) {
-		con.Part(con.Channel())
-		con.Join(con.Channel())
 	})
 
 	con.Loop()
