@@ -1,13 +1,13 @@
 package config
 
 import (
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
+
+	"gopkg.in/yaml.v2"
 )
 
 type ConfData struct {
-	Password           string   `yaml:"password"`
-	Server             string   `yaml:"server"`
+	Token              string   `yaml:"token"`
 	Channel            string   `yaml:"channel"`
 	GitWorkDir         string   `yaml:"git_work_dir"`
 	PullRequestComment string   `yaml:"pull_request_comment"`

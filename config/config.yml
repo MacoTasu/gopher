@@ -1,6 +1,5 @@
-password: "example"
-server: "irc.example.com"
-channel: "#example"
+token: "YOUR TOKEN"
+channel: "Cxxxxxx"
 git_work_dir: "./"
 pull_request_comment: "example"
 mirage_url: "http://example.com"
