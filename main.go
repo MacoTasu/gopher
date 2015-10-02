@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
 
 	"./commands"
 	"./config"
@@ -54,12 +52,6 @@ func main() {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {
 			con.SendMessage(result)
-
-			// 必要ない処理だったりする
-			rand.Seed(time.Now().UnixNano())
-			if rand.Intn(10) == 0 {
-				con.SendMessage(conf.AfterImage)
-			}
 		}
 	})
 
@@ -94,6 +86,10 @@ func main() {
 
 	con.AddAction("pray", func(e *ape.Event) {
 		con.SendMessage(prefix + "< きっと大丈夫やで")
+	})
+
+	con.AddAction("すき", func(e *ape.Event) {
+		con.SendMessage("https://qiita-image-store.s3.amazonaws.com/0/14952/b7acefb3-d354-ea13-2242-f2c16919793d.png")
 	})
 
 	con.Loop()
