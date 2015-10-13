@@ -10,20 +10,20 @@ import (
 type LaunchOpts struct {
 	Subdomain  string
 	BranchName string
+	Config     config.ConfData
 }
 
-func Launch(args []string) (string, error) {
+func Launch(args []string, conf config.ConfData) (string, error) {
 	if len(args) < 2 {
 		return "", fmt.Errorf("not enough argument")
 	}
 
-	l := &LaunchOpts{Subdomain: args[0], BranchName: args[1]}
+	l := &LaunchOpts{Subdomain: args[0], BranchName: args[1], Config: conf}
 	return l.Exec()
 }
 
 func (l *LaunchOpts) Exec() (string, error) {
-	conf := config.LoadConfig()
-	git := &git.Git{WorkDir: conf.GitWorkDir}
+	git := &git.Git{WorkDir: l.Config.GitWorkDir}
 
 	if _, err := git.Fetch(); err != nil {
 		return "", err
@@ -33,7 +33,7 @@ func (l *LaunchOpts) Exec() (string, error) {
 		return "", err
 	}
 
-	mirage := &mirage.Mirage{Subdomain: l.Subdomain, BranchName: l.BranchName}
+	mirage := &mirage.Mirage{Subdomain: l.Subdomain, BranchName: l.BranchName, Url: l.Config.MirageUrl, DockerImage: l.Config.DockerImage}
 	if _, err := mirage.Launch(); err != nil {
 		return "", err
 	}

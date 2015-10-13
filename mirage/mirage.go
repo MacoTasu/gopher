@@ -2,14 +2,15 @@ package mirage
 
 import (
 	"../cmd"
-	"../config"
 	"../util"
 	"fmt"
 )
 
 type Mirage struct {
-	Subdomain  string
-	BranchName string
+	Subdomain   string
+	BranchName  string
+	Url         string
+	DockerImage string
 }
 
 func (m *Mirage) Launch() (string, error) {
@@ -22,11 +23,9 @@ func (m *Mirage) Launch() (string, error) {
 		return "", fmt.Errorf(fmt.Sprintf("Can't launch. AvailableMemory: %d%%\n", percentage))
 	}
 
-	conf := config.LoadConfig()
-
 	c := cmd.Cmd{
 		Name: "curl",
-		Args: []string{conf.MirageUrl, "-d", "subdomain=" + m.Subdomain, "-d", "branch=" + m.BranchName, "-d", "image=" + conf.DockerImage},
+		Args: []string{m.Url, "-d", "subdomain=" + m.Subdomain, "-d", "branch=" + m.BranchName, "-d", "image=" + m.DockerImage},
 	}
 
 	return c.Exec()

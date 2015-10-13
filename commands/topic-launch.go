@@ -13,9 +13,10 @@ import (
 type TopicLaunchOpts struct {
 	Subdomain   string
 	IssueNumber int
+	Config      config.ConfData
 }
 
-func TopicLaunch(args []string) (string, error) {
+func TopicLaunch(args []string, conf config.ConfData) (string, error) {
 	if len(args) < 2 {
 		return "", fmt.Errorf("not enough argument")
 	}
@@ -25,20 +26,19 @@ func TopicLaunch(args []string) (string, error) {
 		return "", err
 	}
 
-	tl := &TopicLaunchOpts{Subdomain: args[0], IssueNumber: number}
+	tl := &TopicLaunchOpts{Subdomain: args[0], IssueNumber: number, Config: conf}
 	return tl.Exec()
 }
 
 func (tl *TopicLaunchOpts) Exec() (string, error) {
-	conf := config.LoadConfig()
-	git := &git.Git{WorkDir: conf.GitWorkDir}
+	git := &git.Git{WorkDir: tl.Config.GitWorkDir}
 
 	owner, repo, err := git.FetchOwnerAndRepo()
 	if err != nil {
 		return "", err
 	}
 
-	github, err := github.New()
+	github, err := github.New(tl.Config)
 	if err != nil {
 		return "", err
 	}
@@ -76,7 +76,7 @@ func (tl *TopicLaunchOpts) Exec() (string, error) {
 
 	git.PushRemote(deployRefName)
 
-	mirage := &mirage.Mirage{Subdomain: tl.Subdomain, BranchName: deployRefName}
+	mirage := &mirage.Mirage{Subdomain: tl.Subdomain, BranchName: deployRefName, Url: tl.Config.MirageUrl, DockerImage: tl.Config.DockerImage}
 	if _, err := mirage.Launch(); err != nil {
 		return "", err
 	}

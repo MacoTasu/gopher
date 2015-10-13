@@ -2,5 +2,6 @@ token: "YOUR TOKEN"
 channel: "Cxxxxxx"
 git_work_dir: "./"
 pull_request_comment: "example"
+pull_request_labels: ["example"]
 mirage_url: "http://example.com"
 docker_image: "example:master"

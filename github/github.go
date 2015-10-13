@@ -13,9 +13,8 @@ type Github struct {
 	Client *gh.Client
 }
 
-func New() (*Github, error) {
-	conf := config.LoadConfig()
-	git := &git.Git{WorkDir: conf.GitWorkDir}
+func New(config config.ConfData) (*Github, error) {
+	git := &git.Git{WorkDir: config.GitWorkDir}
 
 	token, err := git.FetchAccessToken("gopher.token")
 	if err != nil {

@@ -8,21 +8,21 @@ import (
 
 type TopicMergeOpts struct {
 	BranchName string
+	Config     config.ConfData
 }
 
-func TopicMerge(args []string) (string, error) {
+func TopicMerge(args []string, conf config.ConfData) (string, error) {
 	if len(args) < 1 {
 		return "", fmt.Errorf("not enough argument")
 	}
 
-	tm := &TopicMergeOpts{BranchName: args[0]}
+	tm := &TopicMergeOpts{BranchName: args[0], Config: conf}
 	return tm.Exec()
 }
 
 // TODO : issue検索してぶら下がってるPRをmergeするのがよい
 func (tm *TopicMergeOpts) Exec() (string, error) {
-	conf := config.LoadConfig()
-	git := &git.Git{WorkDir: conf.GitWorkDir}
+	git := &git.Git{WorkDir: tm.Config.GitWorkDir}
 
 	if _, err := git.Fetch(); err != nil {
 		return "", err

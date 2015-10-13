@@ -17,20 +17,12 @@ type ConfData struct {
 }
 
 // conf.ymlをロードし構造体へ格納
-func LoadConfig() *ConfData {
-	buf, err := ioutil.ReadFile("config/config_local.yml")
+func LoadConfig(path string) *ConfData {
+	buf, err := ioutil.ReadFile(path)
 
 	d := ConfData{}
 	if err != nil {
-		buf, err := ioutil.ReadFile("config/config.yml")
-		if err != nil {
-			panic(err)
-		}
-
-		if err := yaml.Unmarshal(buf, &d); err != nil {
-			panic(err)
-		}
-		return &d
+		panic(err)
 	}
 
 	if err := yaml.Unmarshal(buf, &d); err != nil {

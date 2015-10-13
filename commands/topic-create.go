@@ -13,6 +13,7 @@ type TopicCreateOpts struct {
 	Prefix      string
 	BranchName  string
 	IssueNumber string
+	Config      config.ConfData
 }
 
 type TopicCreateRequest struct {
@@ -24,18 +25,17 @@ type TopicCreateRequest struct {
 	Body  string
 }
 
-func TopicCreate(args []string) (string, error) {
+func TopicCreate(args []string, conf config.ConfData) (string, error) {
 	if len(args) < 2 {
 		return "", fmt.Errorf("not enough argument")
 	}
 
-	tc := &TopicCreateOpts{Prefix: "topic/", BranchName: args[0], IssueNumber: args[1]}
+	tc := &TopicCreateOpts{Prefix: "topic/", BranchName: args[0], IssueNumber: args[1], Config: conf}
 	return tc.Exec()
 }
 
 func (tc *TopicCreateOpts) Exec() (string, error) {
-	conf := config.LoadConfig()
-	git := &git.Git{WorkDir: conf.GitWorkDir}
+	git := &git.Git{WorkDir: tc.Config.GitWorkDir}
 
 	token, err := git.FetchAccessToken("gopher.token")
 	if err != nil {
@@ -63,7 +63,7 @@ func (tc *TopicCreateOpts) Exec() (string, error) {
 		return "", err
 	}
 
-	labels := conf.PullRequestLabels
+	labels := tc.Config.PullRequestLabels
 
 	if err := tc.createAndPullRequest(git, client, &TopicCreateRequest{
 		Owner: owner,
@@ -71,7 +71,7 @@ func (tc *TopicCreateOpts) Exec() (string, error) {
 		Base:  "master",
 		Head:  tc.baseBranchName(),
 		Title: tc.baseBranchName(),
-		Body:  conf.PullRequestComment + tc.IssueNumber,
+		Body:  tc.Config.PullRequestComment + tc.IssueNumber,
 	}, labels); err != nil {
 		return "", err
 	}

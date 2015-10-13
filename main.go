@@ -5,11 +5,17 @@ import (
 
 	"./commands"
 	"./config"
+	"flag"
 	"github.com/shogo82148/ape-slack"
 )
 
+var (
+	confFile = flag.String("conf", "config.yml", "config file path")
+)
+
 func main() {
-	conf := config.LoadConfig()
+	flag.Parse()
+	conf := config.LoadConfig(*confFile)
 	con := ape.NewConnection(conf.Token)
 	prefix := "ʕ ◔ϖ◔ʔ "
 
@@ -17,7 +23,7 @@ func main() {
 
 	con.AddAction("topic-merge", func(e *ape.Event) {
 		con.SendMessage(prefix + "< " + "topic-merge not ybsk")
-		result, err := commands.TopicMerge(e.Command().Args())
+		result, err := commands.TopicMerge(e.Command().Args(), *conf)
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {
@@ -27,7 +33,7 @@ func main() {
 
 	con.AddAction("topic-deploy", func(e *ape.Event) {
 		con.SendMessage(prefix + "< " + "topic-deploy not ybsk")
-		result, err := commands.TopicDeploy(e.Command().Args())
+		result, err := commands.TopicDeploy(e.Command().Args(), *conf)
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {
@@ -37,7 +43,7 @@ func main() {
 
 	con.AddAction("topic-create", func(e *ape.Event) {
 		con.SendMessage(prefix + "< " + "topic-create not ybsk")
-		result, err := commands.TopicCreate(e.Command().Args())
+		result, err := commands.TopicCreate(e.Command().Args(), *conf)
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {
@@ -47,7 +53,7 @@ func main() {
 
 	con.AddAction("topic-launch", func(e *ape.Event) {
 		con.SendMessage(prefix + "< " + "topic-launch not ybsk")
-		result, err := commands.TopicLaunch(e.Command().Args())
+		result, err := commands.TopicLaunch(e.Command().Args(), *conf)
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {
@@ -57,7 +63,7 @@ func main() {
 
 	con.AddAction("launch", func(e *ape.Event) {
 		con.SendMessage(prefix + "< " + "launch not ybsk")
-		result, err := commands.Launch(e.Command().Args())
+		result, err := commands.Launch(e.Command().Args(), *conf)
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {
@@ -86,10 +92,6 @@ func main() {
 
 	con.AddAction("pray", func(e *ape.Event) {
 		con.SendMessage(prefix + "< きっと大丈夫やで")
-	})
-
-	con.AddAction("すき", func(e *ape.Event) {
-		con.SendMessage("https://qiita-image-store.s3.amazonaws.com/0/14952/b7acefb3-d354-ea13-2242-f2c16919793d.png")
 	})
 
 	con.Loop()

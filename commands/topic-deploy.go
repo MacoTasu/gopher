@@ -14,9 +14,10 @@ type TopicDeployOpts struct {
 	ServerName  string
 	IssueNumber int
 	Options     []string
+	Config      config.ConfData
 }
 
-func TopicDeploy(args []string) (string, error) {
+func TopicDeploy(args []string, conf config.ConfData) (string, error) {
 	if len(args) < 2 {
 		return "", fmt.Errorf("not enough argument")
 	}
@@ -26,20 +27,19 @@ func TopicDeploy(args []string) (string, error) {
 		return "", err
 	}
 
-	td := &TopicDeployOpts{ServerName: args[0], IssueNumber: number, Options: args[2:]}
+	td := &TopicDeployOpts{ServerName: args[0], IssueNumber: number, Options: args[2:], Config: conf}
 	return td.Exec()
 }
 
 func (td *TopicDeployOpts) Exec() (string, error) {
-	conf := config.LoadConfig()
-	git := &git.Git{WorkDir: conf.GitWorkDir}
+	git := &git.Git{WorkDir: td.Config.GitWorkDir}
 
 	owner, repo, err := git.FetchOwnerAndRepo()
 	if err != nil {
 		return "", err
 	}
 
-	github, err := github.New()
+	github, err := github.New(td.Config)
 	if err != nil {
 		return "", err
 	}
