@@ -45,10 +45,11 @@ func (td *TopicDeployOpts) Exec() (string, error) {
 	}
 
 	branches, err := github.FetchPullRequestHeadRef(td.IssueNumber, owner, repo)
-	baseBranch := branches[0]
 	if err != nil {
 		return "", err
 	}
+
+	baseBranch := branches[0]
 
 	if _, err := git.Fetch(); err != nil {
 		return "", err
