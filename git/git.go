@@ -126,6 +126,22 @@ func (g *Git) FetchOwnerAndRepo() (string, string, error) {
 	return matches[1], matches[2], nil
 }
 
+func (g *Git) Reset(branchName string, isReset bool) error {
+
+	args := []string{"reset", branchName}
+	if isReset {
+		args = append(args, "--reset")
+	}
+
+	c := cmd.Cmd{
+		Name: "git",
+		Args: g.appendGitOptions(args),
+	}
+
+	_, err := c.Exec()
+	return err
+}
+
 func (g *Git) appendGitOptions(args []string) []string {
 	gitOptions := []string{"--git-dir", g.WorkDir + "/.git", "--work-tree", g.WorkDir}
 	return append(gitOptions, args...)
