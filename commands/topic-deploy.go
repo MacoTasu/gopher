@@ -33,6 +33,7 @@ func TopicDeploy(args []string, conf config.ConfData) (string, error) {
 
 func (td *TopicDeployOpts) Exec() (string, error) {
 	git := &git.Git{WorkDir: td.Config.GitWorkDir}
+	defer git.Reset("HEAD", true)
 
 	owner, repo, err := git.FetchOwnerAndRepo()
 	if err != nil {
