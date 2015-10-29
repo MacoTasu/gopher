@@ -126,11 +126,11 @@ func (g *Git) FetchOwnerAndRepo() (string, string, error) {
 	return matches[1], matches[2], nil
 }
 
-func (g *Git) Reset(branchName string, isReset bool) error {
+func (g *Git) Reset(branchName string, isHard bool) error {
 
 	args := []string{"reset", branchName}
-	if isReset {
-		args = append(args, "--reset")
+	if isHard {
+		args = append(args, "--hard")
 	}
 
 	c := cmd.Cmd{
