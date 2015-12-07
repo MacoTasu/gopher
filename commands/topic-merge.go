@@ -1,9 +1,10 @@
 package commands
 
 import (
+	"fmt"
+
 	"../config"
 	"../git"
-	"fmt"
 )
 
 type TopicMergeOpts struct {

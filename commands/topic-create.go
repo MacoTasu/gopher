@@ -1,12 +1,13 @@
 package commands
 
 import (
+	"fmt"
+	"log"
+
 	"../config"
 	"../git"
 	"code.google.com/p/goauth2/oauth"
-	"fmt"
 	"github.com/google/go-github/github"
-	"log"
 )
 
 type TopicCreateOpts struct {

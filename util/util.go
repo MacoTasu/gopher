@@ -1,9 +1,10 @@
 package util
 
 import (
-	"../cmd"
 	"regexp"
 	"strconv"
+
+	"../cmd"
 )
 
 var meminfoFunc = meminfo
