@@ -1,9 +1,11 @@
 package mirage
 
 import (
+	"errors"
+	"fmt"
+
 	"../cmd"
 	"../util"
-	"fmt"
 )
 
 type Mirage struct {
@@ -20,7 +22,7 @@ func (m *Mirage) Launch() (string, error) {
 	}
 
 	if percentage <= 15 {
-		return "", fmt.Errorf(fmt.Sprintf("Can't launch. AvailableMemory: %d%%\n", percentage))
+		return "", errors.New(fmt.Sprintf("Can't launch. AvailableMemory: %d%%\n", percentage))
 	}
 
 	c := cmd.Cmd{
