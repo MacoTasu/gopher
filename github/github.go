@@ -1,12 +1,13 @@
 package github
 
 import (
+	"regexp"
+	"strings"
+
 	"../config"
 	"../git"
 	"code.google.com/p/goauth2/oauth"
 	gh "github.com/google/go-github/github"
-	"regexp"
-	"strings"
 )
 
 type Github struct {

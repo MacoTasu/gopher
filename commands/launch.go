@@ -1,10 +1,11 @@
 package commands
 
 import (
+	"fmt"
+
 	"../config"
 	"../git"
 	"../mirage"
-	"fmt"
 )
 
 type LaunchOpts struct {

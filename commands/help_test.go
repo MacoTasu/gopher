@@ -1,10 +1,10 @@
 package commands
 
 import (
-	"github.com/github/hub/Godeps/_workspace/src/github.com/bmizerany/assert"
+	"testing"
 
 	"../commands"
-	"testing"
+	"github.com/github/hub/Godeps/_workspace/src/github.com/bmizerany/assert"
 )
 
 func TestHelp(t *testing.T) {

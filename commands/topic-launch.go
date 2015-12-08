@@ -1,13 +1,14 @@
 package commands
 
 import (
+	"fmt"
+	"strconv"
+	"time"
+
 	"../config"
 	"../git"
 	"../github"
 	"../mirage"
-	"fmt"
-	"strconv"
-	"time"
 )
 
 type TopicLaunchOpts struct {

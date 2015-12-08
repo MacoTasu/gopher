@@ -1,9 +1,10 @@
 package git
 
 import (
-	"../cmd"
 	"fmt"
 	"regexp"
+
+	"../cmd"
 )
 
 type Git struct {
