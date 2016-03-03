@@ -14,6 +14,13 @@ type ConfData struct {
 	MirageUrl          string   `yaml:"mirage_url"`
 	DockerImage        string   `yaml:"docker_image"`
 	PullRequestLabels  []string `yaml:"pull_request_labels"`
+	Jenkins            Jenkins  `yaml:"jenkins"`
+}
+
+type Jenkins struct {
+	Url              string            `yaml:"url"`
+	LaunchTask       string            `yaml:"launch_task"`
+	LaunchParameters map[string]string `yaml:"launch_parameters"`
 }
 
 // conf.ymlをロードし構造体へ格納
