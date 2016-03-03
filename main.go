@@ -6,7 +6,7 @@ import (
 	"./commands"
 	"./config"
 	"flag"
-	"github.com/shogo82148/ape-slack"
+	"github.com/mackee/ape-slack"
 )
 
 var (
@@ -63,7 +63,7 @@ func main() {
 
 	con.AddAction("launch", func(e *ape.Event) {
 		con.SendMessage(prefix + "< " + "launch not ybsk")
-		result, err := commands.Launch(e.Command().Args(), *conf)
+		result, err := commands.Launch(e.Command().Args(), *conf, e.Nick)
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {

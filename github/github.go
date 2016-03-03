@@ -3,8 +3,8 @@ package github
 import (
 	"../config"
 	"../git"
-	"code.google.com/p/goauth2/oauth"
 	gh "github.com/google/go-github/github"
+	"golang.org/x/oauth2"
 	"regexp"
 	"strings"
 )
@@ -21,10 +21,10 @@ func New(config config.ConfData) (*Github, error) {
 		return nil, err
 	}
 
-	t := &oauth.Transport{
-		Token: &oauth.Token{AccessToken: token},
-	}
-	client := gh.NewClient(t.Client())
+	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
+	tc := oauth2.NewClient(oauth2.NoContext, ts)
+	client := gh.NewClient(tc)
+
 	return &Github{Client: client}, nil
 }
 
