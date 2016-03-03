@@ -79,5 +79,5 @@ func (tl *TopicLaunchOpts) Exec() (string, error) {
 
 	lo := &LaunchOpts{Subdomain: tl.Subdomain, BranchName: deployRefName, Config: tl.Config, Launcher: tl.Launcher}
 
-	return lo.execOnJenkins()
+	return lo.Exec()
 }
