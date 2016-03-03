@@ -1,11 +1,11 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 
 	"./commands"
 	"./config"
-	"flag"
 	"github.com/shogo82148/ape-slack"
 )
 

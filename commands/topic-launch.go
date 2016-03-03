@@ -1,12 +1,13 @@
 package commands
 
 import (
-	"../config"
-	"../git"
-	"../github"
 	"fmt"
 	"strconv"
 	"time"
+
+	"../config"
+	"../git"
+	"../github"
 )
 
 type TopicLaunchOpts struct {

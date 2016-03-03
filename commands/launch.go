@@ -1,14 +1,15 @@
 package commands
 
 import (
-	"../config"
-	"../git"
-	"../jenkins"
-	"../mirage"
 	"bytes"
 	"fmt"
 	"net/url"
 	"text/template"
+
+	"../config"
+	"../git"
+	"../jenkins"
+	"../mirage"
 )
 
 type LaunchOpts struct {

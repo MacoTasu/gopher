@@ -1,12 +1,14 @@
 package commands
 
 import (
+	"fmt"
+	"log"
+
 	"../config"
 	"../git"
 	gh "../github"
-	"fmt"
+
 	"github.com/google/go-github/github"
-	"log"
 )
 
 type TopicCreateOpts struct {
