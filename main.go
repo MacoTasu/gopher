@@ -53,7 +53,7 @@ func main() {
 
 	con.AddAction("topic-launch", func(e *ape.Event) {
 		con.SendMessage(prefix + "< " + "topic-launch not ybsk")
-		result, err := commands.TopicLaunch(e.Command().Args(), *conf)
+		result, err := commands.TopicLaunch(e.Command().Args(), *conf, e.Nick)
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {
