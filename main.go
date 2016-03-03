@@ -6,7 +6,7 @@ import (
 	"./commands"
 	"./config"
 	"flag"
-	"github.com/mackee/ape-slack"
+	"github.com/shogo82148/ape-slack"
 )
 
 var (
