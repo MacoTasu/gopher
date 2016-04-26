@@ -15,6 +15,7 @@ type TopicLaunchOpts struct {
 	IssueNumber int
 	Config      config.ConfData
 	Launcher    string
+	ExtraArgs   []string
 }
 
 func TopicLaunch(args []string, conf config.ConfData, launcher string) (string, error) {
@@ -27,7 +28,15 @@ func TopicLaunch(args []string, conf config.ConfData, launcher string) (string, 
 		return "", err
 	}
 
-	tl := &TopicLaunchOpts{Subdomain: args[0], IssueNumber: number, Config: conf, Launcher: launcher}
+	tl := &TopicLaunchOpts{
+		Subdomain:   args[0],
+		IssueNumber: number,
+		Config:      conf,
+		Launcher:    launcher,
+	}
+	if len(args) > 2 {
+		tl.ExtraArgs = args[2:]
+	}
 	return tl.Exec()
 }
 
@@ -77,7 +86,13 @@ func (tl *TopicLaunchOpts) Exec() (string, error) {
 
 	git.PushRemote(deployRefName)
 
-	lo := &LaunchOpts{Subdomain: tl.Subdomain, BranchName: deployRefName, Config: tl.Config, Launcher: tl.Launcher}
+	lo := &LaunchOpts{
+		Subdomain:  tl.Subdomain,
+		BranchName: deployRefName,
+		Config:     tl.Config,
+		Launcher:   tl.Launcher,
+		ExtraArgs:  tl.ExtraArgs,
+	}
 
 	return lo.Exec()
 }
