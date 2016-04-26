@@ -17,6 +17,7 @@ type LaunchOpts struct {
 	BranchName string
 	Config     config.ConfData
 	Launcher   string
+	ExtraArgs  []string
 }
 
 func Launch(args []string, conf config.ConfData, launcher string) (string, error) {
@@ -24,7 +25,16 @@ func Launch(args []string, conf config.ConfData, launcher string) (string, error
 		return "", fmt.Errorf("not enough argument")
 	}
 
-	l := &LaunchOpts{Subdomain: args[0], BranchName: args[1], Config: conf, Launcher: launcher}
+	l := &LaunchOpts{
+		Subdomain:  args[0],
+		BranchName: args[1],
+		Config:     conf,
+		Launcher:   launcher,
+	}
+	if len(args) >= 3 {
+		l.ExtraArgs = args[2:]
+	}
+
 	return l.Exec()
 }
 
