@@ -42,6 +42,7 @@ func TopicLaunch(args []string, conf config.ConfData, launcher string) (string, 
 
 func (tl *TopicLaunchOpts) Exec() (string, error) {
 	git := &git.Git{WorkDir: tl.Config.GitWorkDir}
+	defer git.Reset("HEAD", true)
 
 	owner, repo, err := git.FetchOwnerAndRepo()
 	if err != nil {

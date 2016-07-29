@@ -24,6 +24,7 @@ func TopicMerge(args []string, conf config.ConfData) (string, error) {
 // TODO : issue検索してぶら下がってるPRをmergeするのがよい
 func (tm *TopicMergeOpts) Exec() (string, error) {
 	git := &git.Git{WorkDir: tm.Config.GitWorkDir}
+	defer git.Reset("HEAD", true)
 
 	if _, err := git.Fetch(); err != nil {
 		return "", err
