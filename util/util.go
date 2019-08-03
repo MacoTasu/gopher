@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strconv"
 
-	"../cmd"
+	"github.com/MacoTasu/gopher/cmd"
 )
 
 var meminfoFunc = meminfo

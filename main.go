@@ -1,11 +1,12 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 
-	"./commands"
-	"./config"
+	"github.com/MacoTasu/gopher/commands"
+	"github.com/MacoTasu/gopher/config"
 	"github.com/shogo82148/ape-slack"
 )
 
@@ -32,8 +33,10 @@ func main() {
 	})
 
 	con.AddAction("topic-deploy", func(e *ape.Event) {
+		ctx := context.Background()
+
 		con.SendMessage(prefix + "< " + "topic-deploy not ybsk")
-		result, err := commands.TopicDeploy(e.Command().Args(), *conf)
+		result, err := commands.TopicDeploy(ctx, e.Command().Args(), *conf)
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {
@@ -42,8 +45,10 @@ func main() {
 	})
 
 	con.AddAction("topic-create", func(e *ape.Event) {
+		ctx := context.Background()
+
 		con.SendMessage(prefix + "< " + "topic-create not ybsk")
-		result, err := commands.TopicCreate(e.Command().Args(), *conf)
+		result, err := commands.TopicCreate(ctx, e.Command().Args(), *conf)
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {
@@ -52,8 +57,10 @@ func main() {
 	})
 
 	con.AddAction("topic-launch", func(e *ape.Event) {
+		ctx := context.Background()
+
 		con.SendMessage(prefix + "< " + "topic-launch not ybsk")
-		result, err := commands.TopicLaunch(e.Command().Args(), *conf, e.Nick)
+		result, err := commands.TopicLaunch(ctx, e.Command().Args(), *conf, e.Nick)
 		if err != nil {
 			con.SendMessage(prefix + "< " + fmt.Sprintln(err))
 		} else {

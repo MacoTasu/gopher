@@ -1,13 +1,14 @@
 package commands
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"time"
 
-	"../config"
-	"../git"
-	"../github"
+	"github.com/MacoTasu/gopher/config"
+	"github.com/MacoTasu/gopher/git"
+	"github.com/MacoTasu/gopher/github"
 )
 
 type TopicLaunchOpts struct {
@@ -18,7 +19,7 @@ type TopicLaunchOpts struct {
 	ExtraArgs   []string
 }
 
-func TopicLaunch(args []string, conf config.ConfData, launcher string) (string, error) {
+func TopicLaunch(ctx context.Context, args []string, conf config.ConfData, launcher string) (string, error) {
 	if len(args) < 2 {
 		return "", fmt.Errorf("not enough argument")
 	}
@@ -37,10 +38,10 @@ func TopicLaunch(args []string, conf config.ConfData, launcher string) (string, 
 	if len(args) > 2 {
 		tl.ExtraArgs = args[2:]
 	}
-	return tl.Exec()
+	return tl.Exec(ctx)
 }
 
-func (tl *TopicLaunchOpts) Exec() (string, error) {
+func (tl *TopicLaunchOpts) Exec(ctx context.Context) (string, error) {
 	git := &git.Git{WorkDir: tl.Config.GitWorkDir}
 	defer git.Reset("HEAD", true)
 
@@ -49,7 +50,7 @@ func (tl *TopicLaunchOpts) Exec() (string, error) {
 		return "", err
 	}
 
-	github, err := github.New(tl.Config)
+	github, err := github.New(ctx, tl.Config)
 	if err != nil {
 		return "", err
 	}

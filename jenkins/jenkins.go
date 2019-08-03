@@ -1,10 +1,11 @@
 package jenkins
 
 import (
-	"../config"
 	"fmt"
 	"net/http"
 	"net/url"
+
+	"github.com/MacoTasu/gopher/config"
 )
 
 type Jenkins struct {

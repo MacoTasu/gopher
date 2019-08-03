@@ -1,11 +1,12 @@
 package github
 
 import (
+	"context"
 	"regexp"
 	"strings"
 
-	"../config"
-	"../git"
+	"github.com/MacoTasu/gopher/config"
+	"github.com/MacoTasu/gopher/git"
 	gh "github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
@@ -14,7 +15,7 @@ type Github struct {
 	Client *gh.Client
 }
 
-func New(config config.ConfData) (*Github, error) {
+func New(ctx context.Context, config config.ConfData) (*Github, error) {
 	git := &git.Git{WorkDir: config.GitWorkDir}
 
 	token, err := git.FetchAccessToken("gopher.token")
@@ -23,14 +24,15 @@ func New(config config.ConfData) (*Github, error) {
 	}
 
 	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
-	tc := oauth2.NewClient(oauth2.NoContext, ts)
+	tc := oauth2.NewClient(ctx, ts)
 	client := gh.NewClient(tc)
 
 	return &Github{Client: client}, nil
 }
 
 func (github *Github) FetchPullRequestHeadRef(IssueNumber int, owner string, repo string) ([]string, error) {
-	pull, _, err := github.Client.PullRequests.Get(owner, repo, IssueNumber)
+	ctx := context.Background()
+	pull, _, err := github.Client.PullRequests.Get(ctx, owner, repo, IssueNumber)
 	if err != nil {
 		return nil, err
 	}
