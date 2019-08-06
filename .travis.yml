@@ -1,6 +1,8 @@
 language: go
+env:
+  - GO111MODULE=on
 go:
-  - 1.4
-  - 1.5
+  - 1.11
+  - 1.12
   - tip
 sudo: false
