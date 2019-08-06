@@ -13,7 +13,7 @@ func TestFreeMemoryPercentage(t *testing.T) {
 	if err != nil {
 		t.Log("error:", err)
 	}
-	assert.Equal(t, 0.5, float64(percentage)/100)
+	assert.Equal(t, 50, percentage)
 }
 
 func setMeminfo(s string) {
