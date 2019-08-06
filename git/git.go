@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"regexp"
 
-	"../cmd"
+	"github.com/MacoTasu/gopher/cmd"
 )
 
 type Git struct {

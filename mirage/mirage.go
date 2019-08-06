@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"../cmd"
-	"../util"
+	"github.com/MacoTasu/gopher/cmd"
+	"github.com/MacoTasu/gopher/util"
 )
 
 type Mirage struct {

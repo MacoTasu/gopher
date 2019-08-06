@@ -1,13 +1,13 @@
 package commands
 
 import (
+	"context"
 	"fmt"
 	"log"
 
-	"../config"
-	"../git"
-	gh "../github"
-
+	"github.com/MacoTasu/gopher/config"
+	"github.com/MacoTasu/gopher/git"
+	gh "github.com/MacoTasu/gopher/github"
 	"github.com/google/go-github/github"
 )
 
@@ -27,16 +27,16 @@ type TopicCreateRequest struct {
 	Body  string
 }
 
-func TopicCreate(args []string, conf config.ConfData) (string, error) {
+func TopicCreate(ctx context.Context, args []string, conf config.ConfData) (string, error) {
 	if len(args) < 2 {
 		return "", fmt.Errorf("not enough argument")
 	}
 
 	tc := &TopicCreateOpts{Prefix: "topic/", BranchName: args[0], IssueNumber: args[1], Config: conf}
-	return tc.Exec()
+	return tc.Exec(ctx)
 }
 
-func (tc *TopicCreateOpts) Exec() (string, error) {
+func (tc *TopicCreateOpts) Exec(ctx context.Context) (string, error) {
 	git := &git.Git{WorkDir: tc.Config.GitWorkDir}
 
 	owner, repo, err := git.FetchOwnerAndRepo()
@@ -44,7 +44,7 @@ func (tc *TopicCreateOpts) Exec() (string, error) {
 		return "", err
 	}
 
-	client, err := gh.New(tc.Config)
+	client, err := gh.New(ctx, tc.Config)
 	if err != nil {
 		return "", err
 	}
@@ -63,7 +63,7 @@ func (tc *TopicCreateOpts) Exec() (string, error) {
 
 	labels := tc.Config.PullRequestLabels
 
-	if err := tc.createAndPullRequest(git, client.Client, &TopicCreateRequest{
+	if err := tc.createAndPullRequest(ctx, git, client.Client, &TopicCreateRequest{
 		Owner: owner,
 		Repo:  repo,
 		Base:  "master",
@@ -74,7 +74,7 @@ func (tc *TopicCreateOpts) Exec() (string, error) {
 		return "", err
 	}
 
-	if err := tc.createAndPullRequest(git, client.Client, &TopicCreateRequest{
+	if err := tc.createAndPullRequest(ctx, git, client.Client, &TopicCreateRequest{
 		Owner: owner,
 		Repo:  repo,
 		Base:  tc.baseBranchName(),
@@ -89,7 +89,7 @@ func (tc *TopicCreateOpts) Exec() (string, error) {
 		return "", err
 	}
 
-	if err := tc.createAndPullRequest(git, client.Client, &TopicCreateRequest{
+	if err := tc.createAndPullRequest(ctx, git, client.Client, &TopicCreateRequest{
 		Owner: owner,
 		Repo:  repo,
 		Base:  tc.baseBranchName(),
@@ -103,7 +103,7 @@ func (tc *TopicCreateOpts) Exec() (string, error) {
 	return "ʕ ◔ϖ◔ʔ < ブランチ作成したよ", nil
 }
 
-func (tc *TopicCreateOpts) createAndPullRequest(git *git.Git, client *github.Client, topicCreateRequest *TopicCreateRequest, labels []string) (err error) {
+func (tc *TopicCreateOpts) createAndPullRequest(ctx context.Context, git *git.Git, client *github.Client, topicCreateRequest *TopicCreateRequest, labels []string) (err error) {
 	branchName := topicCreateRequest.Head
 	git.CreateBranch(branchName)
 	git.EmptyCommit()
@@ -116,14 +116,14 @@ func (tc *TopicCreateOpts) createAndPullRequest(git *git.Git, client *github.Cli
 	base := topicCreateRequest.Base
 	title := topicCreateRequest.Title
 	body := topicCreateRequest.Body
-	pull, _, _ := client.PullRequests.Create(owner, repo, &github.NewPullRequest{
+	pull, _, _ := client.PullRequests.Create(ctx, owner, repo, &github.NewPullRequest{
 		Title: &title,
 		Head:  &head,
 		Base:  &base,
 		Body:  &body,
 	})
 
-	_, _, label_err := client.Issues.AddLabelsToIssue(owner, repo, *pull.Number, labels)
+	_, _, label_err := client.Issues.AddLabelsToIssue(ctx, owner, repo, *pull.Number, labels)
 	if label_err != nil {
 		log.Println(label_err)
 	}

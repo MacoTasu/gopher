@@ -6,10 +6,10 @@ import (
 	"net/url"
 	"text/template"
 
-	"../config"
-	"../git"
-	"../jenkins"
-	"../mirage"
+	"github.com/MacoTasu/gopher/config"
+	"github.com/MacoTasu/gopher/git"
+	"github.com/MacoTasu/gopher/jenkins"
+	"github.com/MacoTasu/gopher/mirage"
 )
 
 type LaunchOpts struct {

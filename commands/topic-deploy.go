@@ -1,14 +1,15 @@
 package commands
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"strings"
 	"time"
 
-	"../config"
-	"../git"
-	"../github"
+	"github.com/MacoTasu/gopher/config"
+	"github.com/MacoTasu/gopher/git"
+	"github.com/MacoTasu/gopher/github"
 )
 
 type TopicDeployOpts struct {
@@ -18,7 +19,7 @@ type TopicDeployOpts struct {
 	Config      config.ConfData
 }
 
-func TopicDeploy(args []string, conf config.ConfData) (string, error) {
+func TopicDeploy(ctx context.Context, args []string, conf config.ConfData) (string, error) {
 	if len(args) < 2 {
 		return "", fmt.Errorf("not enough argument")
 	}
@@ -29,10 +30,10 @@ func TopicDeploy(args []string, conf config.ConfData) (string, error) {
 	}
 
 	td := &TopicDeployOpts{ServerName: args[0], IssueNumber: number, Options: args[2:], Config: conf}
-	return td.Exec()
+	return td.Exec(ctx)
 }
 
-func (td *TopicDeployOpts) Exec() (string, error) {
+func (td *TopicDeployOpts) Exec(ctx context.Context) (string, error) {
 	git := &git.Git{WorkDir: td.Config.GitWorkDir}
 	defer git.Reset("HEAD", true)
 
@@ -41,7 +42,7 @@ func (td *TopicDeployOpts) Exec() (string, error) {
 		return "", err
 	}
 
-	github, err := github.New(td.Config)
+	github, err := github.New(ctx, td.Config)
 	if err != nil {
 		return "", err
 	}

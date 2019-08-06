@@ -3,8 +3,8 @@ package commands
 import (
 	"fmt"
 
-	"../config"
-	"../git"
+	"github.com/MacoTasu/gopher/config"
+	"github.com/MacoTasu/gopher/git"
 )
 
 type TopicMergeOpts struct {
